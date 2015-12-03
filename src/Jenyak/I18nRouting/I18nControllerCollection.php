@@ -38,11 +38,17 @@ class I18nControllerCollection extends ControllerCollection
                 $i18nPattern = $route->getPath();
             }
 
-            if ($this->defaultLocale == $locale && $this->localizedDefault === true) {
+            if($this->localizedDefault === true){
+                if ($this->defaultLocale == $locale ) {
+                    $patterns[$i18nPattern][] = $locale;
+                }
+                $patterns['/'.$locale.$i18nPattern][] = $locale;
+            }else{
+                if ($this->defaultLocale !== $locale) {
+                    $i18nPattern = '/'.$locale.$i18nPattern;
+                }
                 $patterns[$i18nPattern][] = $locale;
             }
-
-            $patterns['/'.$locale.$i18nPattern][] = $locale;
         }
 
         return $patterns;
