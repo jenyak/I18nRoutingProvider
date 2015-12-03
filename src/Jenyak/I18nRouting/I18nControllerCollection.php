@@ -78,6 +78,10 @@ class I18nControllerCollection extends ControllerCollection
                     $routes->add($name, $route);
                 } else {
                     foreach ($this->generateI18nPatterns($name, $route) as $pattern => $locales) {
+                        if($route->getOption('i18n_ignore') === true){
+                            $routes->add($name, $route);
+                            continue;
+                        }
                         // If this pattern is used for more than one locale, we need to keep the original route.
                         // We still add individual routes for each locale afterwards for faster generation.
                         if (count($locales) > 1) {
