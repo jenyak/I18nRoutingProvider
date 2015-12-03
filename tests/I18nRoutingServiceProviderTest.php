@@ -22,6 +22,7 @@ class I18nRoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
         $app['translator.domains'] = array('routes' => array(
             'ua' => array('test' => '/тест'),
         ));
+        $app['i18n_routing.allow_localized_default'] = false;
 
         return $app;
     }
