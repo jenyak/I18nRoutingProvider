@@ -43,7 +43,6 @@ class I18nControllerCollection extends ControllerCollection
             }
 
             $patterns['/'.$locale.$i18nPattern][] = $locale;
-
         }
 
         return $patterns;
