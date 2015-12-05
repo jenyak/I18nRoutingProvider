@@ -1,10 +1,10 @@
 {
-  "name": "thegeekrv/i18n-routing-service-provider",
+  "name": "jenyak/i18n-routing-service-provider",
   "description": "Silex i18n routing service provider.",
   "keywords": ["silex", "i18n routing"],
   "license": "MIT",
   "require": {
-    "silex/silex": "~1.0@dev",
+    "silex/silex": "~2.0@dev",
     "symfony/translation": "~2.4"
   },
   "autoload": {
