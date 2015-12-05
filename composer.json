@@ -1,5 +1,5 @@
 {
-  "name": "thegeekrv/i18n-routing-service-provider",
+  "name": "jenyak/i18n-routing-service-provider",
   "description": "Silex i18n routing service provider.",
   "keywords": ["silex", "i18n routing"],
   "license": "MIT",
