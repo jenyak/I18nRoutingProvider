@@ -16,13 +16,15 @@ class I18nControllerCollection extends ControllerCollection
     private $locales;
     private $translator;
     private $translationDomain;
+    private $localizedDefault;
 
-    public function __construct(Route $defaultRoute, $defaultLocale = 'en', array $locales, TranslatorInterface $translator, $translationDomain = 'routes')
+    public function __construct(Route $defaultRoute, $defaultLocale = 'en', array $locales, TranslatorInterface $translator, $translationDomain = 'routes', $localizedDefault = false)
     {
         $this->defaultLocale = $defaultLocale;
         $this->locales = $locales;
         $this->translator = $translator;
         $this->translationDomain = $translationDomain;
+        $this->localizedDefault = $localizedDefault;
 
         parent::__construct($defaultRoute);
     }
@@ -36,11 +38,17 @@ class I18nControllerCollection extends ControllerCollection
                 $i18nPattern = $route->getPath();
             }
 
-            if ($this->defaultLocale !== $locale) {
-                $i18nPattern = '/'.$locale.$i18nPattern;
+            if($this->localizedDefault === true){
+                if ($this->defaultLocale == $locale ) {
+                    $patterns[$i18nPattern][] = $locale;
+                }
+                $patterns['/'.$locale.$i18nPattern][] = $locale;
+            }else{
+                if ($this->defaultLocale !== $locale) {
+                    $i18nPattern = '/'.$locale.$i18nPattern;
+                }
+                $patterns[$i18nPattern][] = $locale;
             }
-
-            $patterns[$i18nPattern][] = $locale;
         }
 
         return $patterns;
@@ -70,6 +78,10 @@ class I18nControllerCollection extends ControllerCollection
                     $routes->add($name, $route);
                 } else {
                     foreach ($this->generateI18nPatterns($name, $route) as $pattern => $locales) {
+                        if($route->getOption('i18n_ignore') === true){
+                            $routes->add($name, $route);
+                            continue;
+                        }
                         // If this pattern is used for more than one locale, we need to keep the original route.
                         // We still add individual routes for each locale afterwards for faster generation.
                         if (count($locales) > 1) {
@@ -83,7 +95,8 @@ class I18nControllerCollection extends ControllerCollection
                             $localeRoute = clone $route;
                             $localeRoute->setPath($pattern);
                             $localeRoute->setDefault('_locale', $locale);
-                            $routes->add($locale.self::ROUTING_PREFIX.$name, $localeRoute);
+                            $default = (0 === strpos($pattern, '/'.$locale)) ? '' : '_default';
+                            $routes->add($locale.$default.self::ROUTING_PREFIX.$name, $localeRoute);
                         }
                     }
                 }
