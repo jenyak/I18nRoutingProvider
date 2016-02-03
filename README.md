@@ -60,4 +60,10 @@ Matched URLs will be:
 
 `/ua/test` - url with prefix
 
+# Disable I18n for a route
+```php
+$app->get('/dont-translate', function() {
+    //...
+})->bind('my_route')->getRoute()->setOption('i18n', false);
+
 
