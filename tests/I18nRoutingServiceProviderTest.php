@@ -34,7 +34,8 @@ class I18nRoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
             return 'ok';
         })->bind('test');
 
-        $this->assertEquals(200, $app->handle(Request::create('/test'))->getStatusCode());
+        $this->assertEquals(404, $app->handle(Request::create('/test'))->getStatusCode());
+        $this->assertEquals(200, $app->handle(Request::create('/en/test'))->getStatusCode());
     }
 
     public function testDefaultLocaleWithPrefixI18nRoutes()
@@ -45,7 +46,7 @@ class I18nRoutingServiceProviderTest extends \PHPUnit_Framework_TestCase
             return 'ok';
         });
 
-        $this->assertEquals(404, $app->handle(Request::create('/en/'))->getStatusCode());
+        $this->assertEquals(200, $app->handle(Request::create('/en/'))->getStatusCode());
     }
 
     public function testNonDefaultLocaleI18nRoutes()
