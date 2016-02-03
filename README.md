@@ -40,11 +40,11 @@ $app = new Application();
 //...
 $app->register(new Jenyak\I18nRouting\Provider\I18nRoutingServiceProvider());
 $app['locale'] = 'en';
-$app['i18n_routing.locales'] = array('en', 'hu', 'ua');
+$app['i18n_routing.locales'] = array('en', 'eu', 'fr');
 
 // You can translate patterns
 $app['translator.domains'] = array('routes' => array(
-    'hu' => array('test_route' => '/teszt'),
+    'fr' => array('test_route' => '/entsegu-bat'),
 ));
 
 // There's no need to put {_locale} in route pattern
@@ -54,10 +54,16 @@ $app->get('/test', function () {
 ```
 Matched URLs will be:
 
-`/test` - url for default locale without prefix
+`/en/test` - url for default locale without prefix
 
-`/hu/teszt` - url with prefix and translated
+`/eu/entsegu-bat` - url with prefix and translated
 
-`/ua/test` - url with prefix
+`/fr/test` - url with prefix
+
+# Disable I18n for a route
+```php
+$app->get('/dont-translate', function() {
+    //...
+})->bind('my_route')->getRoute()->setOption('i18n', false);
 
 
